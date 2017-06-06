@@ -34,17 +34,18 @@ class BloomFilter:
         return v1, v2, v3
 
 if __name__ == "__main__":
-    bf = BloomFilter()
-    res1 = bf.hash_functions("you are my sunshine")
-    print res1
-
-    bf.update("ilovea")
-    bf.update("iloveb")
-    bf.update("ilovec")
-
-    print bf.check("ilovec")
-    print bf.check("iloved")
-    print bf.check("ilovee")
+    pass
+    # bf = BloomFilter()
+    # res1 = bf.hash_functions("you are my sunshine")
+    # print res1
+    #
+    # bf.update("ilovea")
+    # bf.update("iloveb")
+    # bf.update("ilovec")
+    #
+    # print bf.check("ilovec")
+    # print bf.check("iloved")
+    # print bf.check("ilovee")
 
     # bt = bitarray(50)
     # bt.setall(False)

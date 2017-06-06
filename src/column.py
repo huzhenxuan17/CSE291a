@@ -10,6 +10,7 @@ class Column():
         self.mt = mem_table.MEMTable()
 
     def add(self, key, value):
+        value = value.replace(DELETE_FLAG, "/"+DELETE_FLAG)
         persistence_flag = self.mt.add(key, value)
         if persistence_flag:
             self.persistence()
@@ -47,7 +48,7 @@ class Column():
             return None
         if result == DELETE_FLAG:
             return None
-        return result
+        return result.replace("/" + DELETE_FLAG, DELETE_FLAG)
 
     def persistence(self):
         """
