@@ -9,7 +9,7 @@ class SSTable():
             print "using dictionary as input"
             mem_list = []
             for key in mem_dict:
-                mem_list.append((key,mem_dict[key]))
+                mem_list.append((key, mem_dict[key]))
             mem_list.sort()
         else:
             mem_list = mem_dict
