@@ -17,7 +17,7 @@ class db_user(object):
         self.db.put(table, col, row, 0)
 
     def insert(self, table, col, row):
-        self.db.put(table, col, row, 1)
+        self.db.put(table, col, row)
 
 
 if __name__ == "__main__":

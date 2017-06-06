@@ -7,7 +7,7 @@ class DBImpl(object):
     def __init__(self):
         self.tablelist = dict()
 
-    def creat_table(self, table_name, compressType):
+    def creat_table(self, table_name, compressType=0):
         if table_name in self.tablelist:
             return "table already exist"
         else:
@@ -22,6 +22,12 @@ class DBImpl(object):
 
     def put(self, table, col, row, value, Type):
         if table in self.tablelist:
-            return self.tablelist[table].put(col, row, value, Type)
+            return self.tablelist[table].put(col, row, value)
         else:
             return "table not exist!"
+
+
+if __name__ == "__main__":
+    dataBase = DBImpl()
+    dataBase.creat_table("table1")
+    dataBase.get("table1", "col1", "row1")

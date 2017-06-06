@@ -1,4 +1,4 @@
-from mem_table import MemTable
+from column import Column
 
 
 class Table(object):
@@ -17,6 +17,6 @@ class Table(object):
         if col in self.columnlist:
             return self.columnlist[col].put(row, value, Type)
         else:
-            newcol = MemTable()
+            newcol = Column()
             newcol.put(row, value, Type)
             self.columnlist.append(newcol)

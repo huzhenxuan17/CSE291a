@@ -1,2 +1,0 @@
-class MemTable():
-    pass
