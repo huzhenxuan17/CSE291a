@@ -6,7 +6,8 @@ MERGE_THRESHOLD = 10
 
 
 class Column():
-    def __init__(self):
+    def __init__(self, col_name):
+        self.col_name = col_name
         self.bigFile = []
         self.smallFile = []
         self.mt = mem_table.MEMTable()
@@ -59,7 +60,7 @@ class Column():
         :return:
         """
         ss_table_dict = self.mt.mem_table
-        file_name = "data/tmp.dat"
+        file_name = "data/" + self.col_name + '/small' + str(len(self.smallFile)) 
         st = ss_table.SSTable(ss_table_dict, file_name) # inside : update bloom filter
         self.smallFile.append(st)
         self.mt.clear()
@@ -73,7 +74,7 @@ class Column():
         for sstable in reversed(self.smallFile):
             sstable_list.append(sstable.to_list())
         new_sstable_list = Column.merge_list(sstable_list)
-        file_name = "data/tmp.dat"
+        file_name = "data/" + self.col_name + '/big' + str(len(self.bigFile)) 
         st = ss_table.SSTable(new_sstable_list, file_name)
         self.bigFile.append(st)
 

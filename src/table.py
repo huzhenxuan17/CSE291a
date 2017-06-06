@@ -17,6 +17,6 @@ class Table(object):
         if col in self.columnlist:
             return self.columnlist[col].put(row, value, Type)
         else:
-            newcol = Column()
+            newcol = Column(col)
             newcol.put(row, value, Type)
             self.columnlist.append(newcol)

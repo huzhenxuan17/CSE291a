@@ -20,7 +20,6 @@ class BloomFilter:
         self.bitArray[v1] = True
         self.bitArray[v2] = True
         self.bitArray[v3] = True
-        pass
 
     def hash_functions(self, key):
         hash1 = hashlib.sha224(key)
