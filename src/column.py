@@ -5,7 +5,7 @@ DELETE_FLAG = "/"
 MERGE_THRESHOLD = 10
 
 
-class Column():
+class Column:
     def __init__(self, col_name):
         self.col_name = col_name
         self.bigFile = []
@@ -85,6 +85,7 @@ class Column():
             return sstable_raw[0]
         list1 = Column.merge_list(ss_table[:length//2])
         list2= Column.merge_list(ss_table[length//2:])
+        #TODO merge
 
 if __name__ == "__main__":
     cc = Column()
