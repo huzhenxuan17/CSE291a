@@ -8,7 +8,7 @@ class SSTable():
             print "using dictionary as input"
             mem_list = []
             for key in mem_dict:
-                mem_list.append((key,mem_dict[key]))
+                mem_list.append((key, mem_dict[key]))
             mem_list.sort()
         else:
             mem_list = mem_dict
@@ -16,7 +16,7 @@ class SSTable():
         # TODO save the sorted list into disk and  update bloom_filter
         fp = open(self.file_name, 'w')
         for item in mem_list:
-            fp.write(item[0] +"\t" + item[1]+"\n")
+            fp.write(item[0] + "\t" + item[1]+"\n")
 
 
     def get(self, key):
