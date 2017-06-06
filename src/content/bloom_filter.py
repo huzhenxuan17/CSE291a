@@ -1,13 +1,12 @@
 from bitarray import bitarray
 import hashlib
 
-VALID_DIGIT = 6 # range from 6 to 8
-ARRAY_SIZE = 16 ** VALID_DIGIT
-
 
 class BloomFilter:
-    def __init__(self):
-        self.bitArray = bitarray(ARRAY_SIZE)
+    def __init__(self, digit):
+        self.valid_digit = digit  # range from 6 to 8
+        self.array_size = 16 ** self.valid_digit
+        self.bitArray = bitarray(self.array_size)
         self.bitArray.setall(False)
 
     def check(self, key):
@@ -23,14 +22,13 @@ class BloomFilter:
         self.bitArray[v3] = True
         pass
 
-    @staticmethod
-    def hash_functions(key):
+    def hash_functions(self, key):
         hash1 = hashlib.sha224(key)
         hash2 = hashlib.sha256(key)
         hash3 = hashlib.sha1(key)
-        v1 = int(hash1.hexdigest()[-VALID_DIGIT:], 16)
-        v2 = int(hash2.hexdigest()[-VALID_DIGIT:], 16)
-        v3 = int(hash3.hexdigest()[-VALID_DIGIT:], 16)
+        v1 = int(hash1.hexdigest()[-self.valid_digit:], 16)
+        v2 = int(hash2.hexdigest()[-self.valid_digit:], 16)
+        v3 = int(hash3.hexdigest()[-self.valid_digit:], 16)
         return v1, v2, v3
 
 if __name__ == "__main__":

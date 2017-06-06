@@ -2,6 +2,8 @@ from content import mem_table
 from content import ss_table
 
 DELETE_FLAG = "/"
+MERGE_THRESHOLD = 10
+
 
 class Column():
     def __init__(self):
@@ -56,12 +58,39 @@ class Column():
         2. update bloom_filter
         :return:
         """
-        new_file = self.mt.mem_table
-        file_name = "tmp"
-        st = ss_table.SSTable(new_file, file_name) # inside : update bloom filter
+        ss_table_dict = self.mt.mem_table
+        file_name = "data/tmp.dat"
+        st = ss_table.SSTable(ss_table_dict, file_name) # inside : update bloom filter
         self.smallFile.append(st)
         self.mt.clear()
+        
+        # merge smallFile
+        if len(self.smallFile) >= MERGE_THRESHOLD:
+            self.merge_sstable()
 
     def merge_sstable(self):
-        #TODO
-        pass
+        sstable_list = []
+        for sstable in reversed(self.smallFile):
+            sstable_list.append(sstable.to_list())
+        new_sstable_list = Column.merge_list(sstable_list)
+        file_name = "data/tmp.dat"
+        st = ss_table.SSTable(new_sstable_list, file_name)
+        self.bigFile.append(st)
+
+    @staticmethod
+    def merge_list(sstable_raw):
+        length = len(sstable_raw)
+        if length == 1:
+            return sstable_raw[0]
+        list1 = Column.merge_list(ss_table[:length//2])
+        list2= Column.merge_list(ss_table[length//2:])
+
+if __name__ == "__main__":
+    cc = Column()
+    cc.add("ccc ", "haha")
+    cc.add("aaa", "you are my sunshine")
+    cc.add("bb", "my only sunshine")
+    cc.add("a", "LoL")
+    cc.persistence()
+    ad = cc.smallFile[0].to_list()
+    print ad
