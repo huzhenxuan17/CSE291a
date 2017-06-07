@@ -25,7 +25,7 @@ class SSTable:
         next_offset = 0
         for item in mem_list:
             self.bf.update(item[0])
-            string = item[0] + "\t" + item[1]+"\n"
+            string = item[0] + "&" + item[1]+"\n"
             if self.compresstype == 0:
                 current_item = string
             elif self.compresstype == 1:
@@ -34,12 +34,12 @@ class SSTable:
                 # block compression
                 current_item = string
             fp_data.write(current_item)
-            fp_index.write(item[0] + "\t" + str(next_offset) + '\n')
+            fp_index.write(item[0] + "&" + str(next_offset) + '\n')
             next_offset += len(current_item)
 
     def get(self, key):
         fp_index = open(self.file_name + "_idx.dat", 'r')
-        index = [line.split() for line in fp_index.readlines()]
+        index = [line.split('&') for line in fp_index.readlines()]
         lo = 0
         hi = len(index)
         offset = -1
@@ -60,9 +60,9 @@ class SSTable:
         if self.compresstype == 0:
             aaa = fp_data.readline()
             print aaa,"hzx" # TODO debug
-            data =aaa.split('\t')[1]
+            data =aaa.split('&')[1]
         elif self.compresstype == 1:
-            data = zlib.decompress(fp_data.readline()).split('\t')[1]
+            data = zlib.decompress(fp_data.readline()).split('&')[1]
         elif self.compresstype == 2:
             pass
         return data.rstrip()
@@ -72,7 +72,7 @@ class SSTable:
         result = []
         with open(self.file_name + '_data.dat') as fp:
             for line in fp:
-                line_tuple = line.strip().split("\t")
+                line_tuple = line.strip().split("\n")
                 result.append((line_tuple[0], line_tuple[1]))
         return result
 
@@ -80,7 +80,7 @@ if __name__=="__main__":
     mem_dict = {'1': 'aaa',
                 '2': 'bbbbbb',
                 '3': 'ccdcd'}
-    test = SSTable(mem_dict, '../data/tmp2', 1)
+    test = SSTable(mem_dict, '../data/tmp2', 0)
     print test.get('2')
     print test.get('1')
 
