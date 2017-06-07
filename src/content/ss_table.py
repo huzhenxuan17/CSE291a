@@ -1,10 +1,13 @@
 import bloom_filter
 import zlib
+import platform
+
 
 class SSTable:
     """
     the set of SSTable
     """
+
     def __init__(self, mem_dict, file_name, compresstype):
         self.file_name = file_name
         self.compresstype = compresstype
@@ -20,12 +23,12 @@ class SSTable:
             mem_list = mem_dict
 
         # TODO save the sorted list into disk and  update bloom_filter
-        fp_data = open(self.file_name+'_data.dat', 'w')
-        fp_index = open(self.file_name+'_idx.dat', 'w')
+        fp_data = open(self.file_name + '_data.dat', 'w')
+        fp_index = open(self.file_name + '_idx.dat', 'w')
         next_offset = 0
         for item in mem_list:
             self.bf.update(item[0])
-            string = item[0] + "\t" + item[1]+"\n"
+            string = item[0] + "\t" + item[1] + "\n"
             if self.compresstype == 0:
                 current_item = string
             elif self.compresstype == 1:
@@ -36,6 +39,8 @@ class SSTable:
             fp_data.write(current_item)
             fp_index.write(item[0] + "\t" + str(next_offset) + '\n')
             next_offset += len(current_item)
+            if platform.system() == "Windows" and self.compresstype == 0:
+                next_offset += 1  # do it for windows
 
     def get(self, key):
         fp_index = open(self.file_name + "_idx.dat", 'r')
@@ -44,23 +49,21 @@ class SSTable:
         hi = len(index)
         offset = -1
         while lo <= hi:
-            mid = (lo+hi)//2
+            mid = (lo + hi) // 2
             if index[mid][0] == key:
                 offset = int(index[mid][1])
                 break
             elif index[mid][0] < key:
-                lo = mid+1
+                lo = mid + 1
             else:
-                hi = mid-1
+                hi = mid - 1
         if offset == -1:
             return None
 
         fp_data = open(self.file_name + "_data.dat", 'r')
         fp_data.seek(offset, 0)
         if self.compresstype == 0:
-            aaa = fp_data.readline()
-            print aaa,"hzx" # TODO debug
-            data =aaa.split('\t')[1]
+            data = fp_data.readline().split('\t')[1]
         elif self.compresstype == 1:
             data = zlib.decompress(fp_data.readline()).split('\t')[1]
         elif self.compresstype == 2:
@@ -76,12 +79,11 @@ class SSTable:
                 result.append((line_tuple[0], line_tuple[1]))
         return result
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     mem_dict = {'1': 'aaa',
                 '2': 'bbbbbb',
                 '3': 'ccdcd'}
     test = SSTable(mem_dict, '../data/tmp2', 1)
     print test.get('2')
     print test.get('1')
-
-
