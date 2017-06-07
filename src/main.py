@@ -18,7 +18,7 @@ def test_case1():
         database.insert("table1", "col1", randomString(2), randomString(10))
         print i
     aaa = randomString(2)
-    # print aaa, database.select("table1", "col1", aaa)
+    print database.select("table1", "col1", aaa)
 
 
 test_case1()

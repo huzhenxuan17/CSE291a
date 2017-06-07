@@ -8,9 +8,9 @@ class MEMTable:
 
     def add(self, key, value):
         if key in self.mem_table:
-            self.usage = self.usage - len(key) - len(self.mem_table[key]) - 1
+            self.usage = self.usage - len(key) - len(self.mem_table[key]) - 2
         self.mem_table[key] = value
-        self.usage = self.usage + len(key) + len(value) + 1
+        self.usage = self.usage + len(key) + len(value) + 2
         if self.usage >= THRESHOLD:
             return True
         else:
