@@ -13,10 +13,18 @@ class Table(object):
         else:
             return "wrong column name!"
 
-    def put(self, col, row, value, Type):
+    def put(self, col, row, value, compresstype=0):
+        '''
+
+        :param compresstype:
+            0: uncompressed
+            1: string compressed
+            2: block compressed
+        :return:
+        '''
         if col in self.columnlist:
-            return self.columnlist[col].put(row, value, Type)
+            return self.columnlist[col].add(row, value)
         else:
-            newcol = Column(col)
-            newcol.put(row, value, Type)
+            newcol = Column(col，compresstype)
+            newcol.add(row, value)
             self.columnlist.append(newcol)

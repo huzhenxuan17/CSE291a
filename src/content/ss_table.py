@@ -23,9 +23,9 @@ class SSTable:
         next_offset = 0
         for item in mem_list:
             self.bf.update(item[0])
-            current_item = item[0] +"\t" + item[1]+"\n"
+            current_item = item[0] + "\t" + item[1]+"\n"
             fp_data.write(current_item)
-            fp_index.write(item[0] +"\t" + str(next_offset) + '\n')
+            fp_index.write(item[0] + "\t" + str(next_offset) + '\n')
             next_offset += len(current_item)
 
     def get(self, key):
@@ -47,7 +47,7 @@ class SSTable:
             return None
 
         fp_data = open(self.file_name + "_data.dat", 'r')
-        fp_data.seek(offset,0)
+        fp_data.seek(offset, 0)
         data = fp_data.readline().split('\t')[1]
         return data.rstrip()
 

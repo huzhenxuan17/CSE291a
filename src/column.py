@@ -6,8 +6,9 @@ MERGE_THRESHOLD = 10
 
 
 class Column:
-    def __init__(self, col_name):
+    def __init__(self, col_name, compresstype):
         self.col_name = col_name
+        self.compresstype = compresstype
         self.bigFile = []
         self.smallFile = []
         self.mt = mem_table.MEMTable()
