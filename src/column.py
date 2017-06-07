@@ -80,6 +80,13 @@ class Column:
         file_name = "data/" + self.col_name + '/big' + str(len(self.bigFile))
         st = ss_table.SSTable(new_sstable_list, file_name, self.compresstype)
         self.bigFile.append(st)
+
+        # remove all small File
+        for sstable in self.smallFile:
+            path1 = sstable.file_name + "_idx.dat"
+            path2 = sstable.file_name + "_data.dat"
+            os.remove(path1)
+            os.remove(path2)
         self.smallFile = []
 
     @staticmethod
@@ -87,8 +94,8 @@ class Column:
         length = len(sstable_raw)
         if length == 1:
             return sstable_raw[0]
-        list1 = Column.merge_list(ss_table[:length // 2])
-        list2 = Column.merge_list(ss_table[length // 2:])
+        list1 = Column.merge_list(sstable_raw[:length // 2])
+        list2 = Column.merge_list(sstable_raw[length // 2:])
         result = []
         len1 = len(list1)
         len2 = len(list2)

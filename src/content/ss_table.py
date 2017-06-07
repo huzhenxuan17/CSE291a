@@ -6,7 +6,7 @@ class SSTable:
     the set of SSTable
     """
     def __init__(self, mem_dict, file_name, compresstype):
-        self.file_name = file_name # TODO hard code
+        self.file_name = file_name
         self.compresstype = compresstype
         self.bf = bloom_filter.BloomFilter(6)
         if isinstance(mem_dict, dict):
@@ -16,6 +16,7 @@ class SSTable:
                 mem_list.append((key, mem_dict[key]))
             mem_list.sort()
         else:
+            print "using list as input"
             mem_list = mem_dict
 
         # TODO save the sorted list into disk and  update bloom_filter
@@ -57,7 +58,9 @@ class SSTable:
         fp_data = open(self.file_name + "_data.dat", 'r')
         fp_data.seek(offset, 0)
         if self.compresstype == 0:
-            data = fp_data.readline().split('\t')[1]
+            aaa = fp_data.readline()
+            print aaa,"hzx" # TODO debug
+            data =aaa.split('\t')[1]
         elif self.compresstype == 1:
             data = zlib.decompress(fp_data.readline()).split('\t')[1]
         elif self.compresstype == 2:
@@ -67,7 +70,7 @@ class SSTable:
     def to_list(self):
         # TODO return a list of the file
         result = []
-        with open(self.file_name) as fp:
+        with open(self.file_name + '_data.dat') as fp:
             for line in fp:
                 line_tuple = line.strip().split("\t")
                 result.append((line_tuple[0], line_tuple[1]))

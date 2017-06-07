@@ -1,6 +1,7 @@
 import random
 import db_user
 
+
 def randomString(length):
     result = ""
     model = "abcdefghijlmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
@@ -9,12 +10,15 @@ def randomString(length):
         result += model[seed]
     return result
 
+
 def test_case1():
-    dataBase = db_user.DBUser()
-    dataBase.open("table1", 0)
-    for i in range(1000):
-        dataBase.insert("table1", "col1", randomString(2), randomString(10))
+    database = db_user.DBUser()
+    database.open("table1", 0)
+    for i in range(5000):
+        database.insert("table1", "col1", randomString(2), randomString(10))
         print i
+    aaa = randomString(2)
+    # print aaa, database.select("table1", "col1", aaa)
 
 
 test_case1()
