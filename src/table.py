@@ -25,6 +25,6 @@ class Table(object):
         if col in self.columnlist:
             return self.columnlist[col].add(row, value)
         else:
-            newcol = Column(col，compresstype)
+            newcol = Column(col, compresstype)
             newcol.add(row, value)
-            self.columnlist.append(newcol)
+            self.columnlist[col] = newcol

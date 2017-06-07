@@ -1,12 +1,13 @@
 import bloom_filter
-
+import zlib
 
 class SSTable:
     """
     the set of SSTable
     """
-    def __init__(self, mem_dict, file_name):
+    def __init__(self, mem_dict, file_name, compresstype):
         self.file_name = file_name # TODO hard code
+        self.compresstype = compresstype
         self.bf = bloom_filter.BloomFilter(6)
         if isinstance(mem_dict, dict):
             print "using dictionary as input"
@@ -23,7 +24,14 @@ class SSTable:
         next_offset = 0
         for item in mem_list:
             self.bf.update(item[0])
-            current_item = item[0] + "\t" + item[1]+"\n"
+            string = item[0] + "\t" + item[1]+"\n"
+            if self.compresstype == 0:
+                current_item = string
+            elif self.compresstype == 1:
+                current_item = zlib.compress(string, 7)
+            elif self.compresstype == 2:
+                # block compression
+                current_item = string
             fp_data.write(current_item)
             fp_index.write(item[0] + "\t" + str(next_offset) + '\n')
             next_offset += len(current_item)
@@ -48,7 +56,12 @@ class SSTable:
 
         fp_data = open(self.file_name + "_data.dat", 'r')
         fp_data.seek(offset, 0)
-        data = fp_data.readline().split('\t')[1]
+        if self.compresstype == 0:
+            data = fp_data.readline().split('\t')[1]
+        elif self.compresstype == 1:
+            data = zlib.decompress(fp_data.readline()).split('\t')[1]
+        elif self.compresstype == 2:
+            pass
         return data.rstrip()
 
     def to_list(self):
@@ -64,7 +77,7 @@ if __name__=="__main__":
     mem_dict = {'1': 'aaa',
                 '2': 'bbbbbb',
                 '3': 'ccdcd'}
-    test = SSTable(mem_dict, '../data/tmp2')
+    test = SSTable(mem_dict, '../data/tmp2', 1)
     print test.get('2')
     print test.get('1')
 
