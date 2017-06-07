@@ -1,5 +1,6 @@
 from content import mem_table
 from content import ss_table
+import os
 
 DELETE_FLAG = "/"
 MERGE_THRESHOLD = 10
@@ -12,6 +13,7 @@ class Column:
         self.bigFile = []
         self.smallFile = []
         self.mt = mem_table.MEMTable()
+        os.mkdir("data/"+col_name)
 
     def add(self, key, value):
         value = value.replace(DELETE_FLAG, "/" + DELETE_FLAG)
@@ -62,7 +64,7 @@ class Column:
         """
         ss_table_dict = self.mt.mem_table
         file_name = "data/" + self.col_name + '/small' + str(len(self.smallFile))
-        st = ss_table.SSTable(ss_table_dict, file_name)  # inside : update bloom filter
+        st = ss_table.SSTable(ss_table_dict, file_name, self.compresstype)  # inside : update bloom filter
         self.smallFile.append(st)
         self.mt.clear()
         # merge smallFile
@@ -75,7 +77,7 @@ class Column:
             sstable_list.append(sstable.to_list())
         new_sstable_list = Column.merge_list(sstable_list)
         file_name = "data/" + self.col_name + '/big' + str(len(self.bigFile))
-        st = ss_table.SSTable(new_sstable_list, file_name)
+        st = ss_table.SSTable(new_sstable_list, file_name, self.compresstype)
         self.bigFile.append(st)
         self.smallFile = []
 
