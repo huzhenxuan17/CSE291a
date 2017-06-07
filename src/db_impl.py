@@ -30,4 +30,4 @@ class DBImpl(object):
 if __name__ == "__main__":
     dataBase = DBImpl()
     dataBase.creat_table("table1")
-    dataBase.get("table1", "col1", "row1")
+    dataBase.get("table1", "col12", "row1")

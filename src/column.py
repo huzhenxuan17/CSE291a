@@ -13,7 +13,8 @@ class Column:
         self.bigFile = []
         self.smallFile = []
         self.mt = mem_table.MEMTable()
-        os.mkdir("data/"+col_name)
+        if not os.path.isdir("data/"+col_name):
+            os.mkdir("data/"+col_name)
 
     def add(self, key, value):
         value = value.replace(DELETE_FLAG, "/" + DELETE_FLAG)
