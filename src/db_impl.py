@@ -20,7 +20,7 @@ class DBImpl(object):
         else:
             return "table not exist!"
 
-    def put(self, table, col, row, value, Type):
+    def put(self, table, col, row, value):
         if table in self.tablelist:
             return self.tablelist[table].put(col, row, value)
         else:

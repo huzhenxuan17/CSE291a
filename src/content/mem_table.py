@@ -1,4 +1,4 @@
-THRESHOLD = 64 * 1024
+THRESHOLD = 4 * 1024
 
 
 class MEMTable:
@@ -8,7 +8,7 @@ class MEMTable:
 
     def add(self, key, value):
         if key in self.mem_table:
-            self.usage = self.usage - len(key) - len(self.mem_table[value]) - 1
+            self.usage = self.usage - len(key) - len(self.mem_table[key]) - 1
         self.mem_table[key] = value
         self.usage = self.usage + len(key) + len(value) + 1
         if self.usage >= THRESHOLD:

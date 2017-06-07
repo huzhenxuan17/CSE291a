@@ -1,7 +1,6 @@
 from db_impl import DBImpl
 
-
-class db_user(object):
+class DBUser(object):
     """docstring for db_user"""
 
     def __init__(self):
@@ -16,10 +15,7 @@ class db_user(object):
     def delete(self, table, col, row):
         self.db.put(table, col, row, 0)
 
-    def insert(self, table, col, row):
-        self.db.put(table, col, row)
+    def insert(self, table, col, row, value):
+        self.db.put(table, col, row, value)
 
 
-if __name__ == "__main__":
-    dataBase = db_user()
-    dataBase.open("table1", 0)
