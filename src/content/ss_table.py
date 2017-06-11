@@ -10,7 +10,7 @@ class SSTable:
     def __init__(self, mem_dict, file_name, compresstype):
         self.file_name = file_name
         self.compresstype = compresstype
-        self.bf = bloom_filter.BloomFilter(6)
+        self.bf = bloom_filter.BloomFilter(4)
         if isinstance(mem_dict, dict):
             mem_list = []
             for key in mem_dict:
@@ -42,7 +42,7 @@ class SSTable:
         fp_index = open(self.file_name + "_idx.dat", 'r')
         index = [line.split() for line in fp_index.readlines()]
         lo = 0
-        hi = len(index)
+        hi = len(index) -1
         offset = -1
         while lo <= hi:
             mid = (lo + hi) // 2

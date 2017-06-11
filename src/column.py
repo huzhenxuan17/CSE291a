@@ -4,7 +4,7 @@ import os
 
 DELETE_FLAG = "/"
 MERGE_THRESHOLD = 10
-
+BLOOMFILTER_FLAG = True
 
 class Column:
     def __init__(self, col_name, compresstype):
@@ -41,13 +41,13 @@ class Column:
             result = self.mt.mem_table[key]
         if not result:
             for sstable in reversed(self.smallFile):
-                if sstable.bf.check(key):
+                if (not BLOOMFILTER_FLAG) or sstable.bf.check(key):
                     result = sstable.get(key)
                     if result is not None:
                         break
         if not result:
             for sstable in reversed(self.bigFile):
-                if sstable.bf.check(key):
+                if (not BLOOMFILTER_FLAG) or sstable.bf.check(key):
                     result = sstable.get(key)
                     if result is not None:
                         break
