@@ -2,7 +2,6 @@ import bloom_filter
 import zlib
 import platform
 
-
 class SSTable:
     """
     the set of SSTable
@@ -13,16 +12,13 @@ class SSTable:
         self.compresstype = compresstype
         self.bf = bloom_filter.BloomFilter(6)
         if isinstance(mem_dict, dict):
-            print "using dictionary as input"
             mem_list = []
             for key in mem_dict:
                 mem_list.append((key, mem_dict[key]))
             mem_list.sort()
         else:
-            print "using list as input"
             mem_list = mem_dict
 
-        # TODO save the sorted list into disk and  update bloom_filter
         fp_data = open(self.file_name + '_data.dat', 'w')
         fp_index = open(self.file_name + '_idx.dat', 'w')
         next_offset = 0
@@ -71,7 +67,6 @@ class SSTable:
         return data.rstrip()
 
     def to_list(self):
-        # TODO return a list of the file
         result = []
         with open(self.file_name + '_data.dat') as fp:
             for line in fp:

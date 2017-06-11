@@ -28,3 +28,9 @@ class Table(object):
             newcol = Column(col, compresstype)
             newcol.add(row, value)
             self.columnlist[col] = newcol
+
+    def delete(self, col, row):
+        if col in self.columnlist:
+            return self.columnlist[col].delete(row)
+        else:
+            return "wrong column name!"
