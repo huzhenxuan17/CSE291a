@@ -16,7 +16,14 @@ class DBImpl(object):
 
     def get(self, table, col, row):
         if table in self.tablelist:
-            return self.tablelist[table].get(col, row)
+            if col == '*' and row == '*':
+                return self.tablelist[table].get_table()
+            elif col == '*' and row != '*':
+                return self.tablelist[table].get_row(row)
+            elif col != '*' and row == '*':
+                return self.tablelist[table].get_col(col)
+            else:
+                return self.tablelist[table].get(col, row)
         else:
             return "table not exist!"
 
@@ -32,6 +39,11 @@ class DBImpl(object):
         else:
             return "table not exist!"
 
+    def where(self, table, attribute, query):
+        if table in self.tablelist:
+            return self.tablelist[table].where(attribute, query)
+        else:
+            return "table not exist!"
 
 if __name__ == "__main__":
     dataBase = DBImpl()

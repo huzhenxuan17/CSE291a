@@ -57,6 +57,7 @@ class Column:
             return None
         return result.replace("/" + DELETE_FLAG, DELETE_FLAG)
 
+
     def persistence(self):
         """
         1. save mem_table to ss_table
